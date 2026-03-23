@@ -1,38 +1,42 @@
 import java.util.*;
 
-class ListNode {
+class Node {
     int data;
-    ListNode next;
+    Node next;
 
-    ListNode(int data) {
+    Node(int data) {
         this.data = data;
         this.next = null;
     }
 }
 
-public class UseCase8PalindromeCheckerApp {
+public class UseCase9PalindromeCheckerApp {
 
-    // Function to check palindrome
-    static boolean isPalindrome(Node head) {
-        Stack<Integer> stack = new Stack<>();
-        Node temp = head;
+    static Node left;  // global pointer
 
-        // Push all elements into stack
-        while(temp != null) {
-            stack.push(temp.data);
-            temp = temp.next;
-        }
+    // Recursive function
+    static boolean isPalindromeUtil(Node right) {
+        if (right == null)
+            return true;
 
-        // Compare again
-        temp = head;
-        while(temp != null) {
-            if(temp.data != stack.pop()) {
-                return false;
-            }
-            temp = temp.next;
-        }
+        // Recurse till end
+        boolean res = isPalindromeUtil(right.next);
+        if (!res)
+            return false;
+
+        // Compare left and right
+        if (left.data != right.data)
+            return false;
+
+        // Move left pointer forward
+        left = left.next;
 
         return true;
+    }
+
+    static boolean isPalindrome(Node head) {
+        left = head;
+        return isPalindromeUtil(head);
     }
 
     public static void main(String[] args) {
@@ -45,11 +49,11 @@ public class UseCase8PalindromeCheckerApp {
         n = sc.nextInt();
 
         System.out.println("Enter elements:");
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             x = sc.nextInt();
             Node newNode = new Node(x);
 
-            if(head == null) {
+            if (head == null) {
                 head = newNode;
                 temp = newNode;
             } else {
@@ -58,12 +62,10 @@ public class UseCase8PalindromeCheckerApp {
             }
         }
 
-        // Check palindrome
-        if(isPalindrome(head)) {
+        if (isPalindrome(head))
             System.out.println("Linked List is a Palindrome");
-        } else {
+        else
             System.out.println("Linked List is NOT a Palindrome");
-        }
 
         sc.close();
     }
